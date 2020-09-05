@@ -1,3 +1,4 @@
 [submodule "3rdparty/imgui"]
 	path = 3rdparty/imgui
 	url = https://github.com/ocornut/imgui.git
+	branch = 751d153ca9f338ec7159e7a250abe198b6a17d73
