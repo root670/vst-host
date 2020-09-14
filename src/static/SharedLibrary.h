@@ -20,8 +20,12 @@ public:
     std::filesystem::path GetPath()const;
 
     /// @brief Load the shared library.
-    /// @return true if the shared library was loaded successfully. Otherwise, false.
+    /// @return true if the shared library was loaded successfully.
     bool Load();
+
+    /// @brief Unload the shared library.
+    /// @return true if the shared library was unloaded successfully.
+    bool Unload();
 
     /// @brief Get symbol from loaded shared library.
     /// @param strName Name of symbol to load.

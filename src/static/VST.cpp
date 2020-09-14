@@ -32,19 +32,25 @@ bool VSTDatabase::ScanDirectories()
             if (!entry.is_regular_file())
                 continue;
 
-            std::unique_ptr<VSTPlugin> plugin = std::make_unique<VSTPlugin>();
+            std::shared_ptr<VSTPlugin> plugin = std::make_shared<VSTPlugin>();
             if (!plugin->Initialize(entry.path()))
                 continue; // Not a valid VST plugin
 
-            m_vVSTPlugins.emplace_back(std::move(plugin));
+            plugin->Unload();
+            m_vVSTPlugins.push_back(plugin);
         }
     }
 
     return true;
 }
 
+const std::vector<std::shared_ptr<VSTPlugin>> &VSTDatabase::GetPlugins() const
+{
+    return m_vVSTPlugins;
+}
+
 VSTPlugin::VSTPlugin()
-    : m_pfnFstMain(nullptr)
+    : m_pfnFstMain(nullptr), m_pEffect(nullptr)
 {
 }
 
@@ -65,10 +71,7 @@ intptr_t dispatch_v(VST24::AEffect *effect, VST24::PluginOpCode_t opcode, int in
 
 VSTPlugin::~VSTPlugin()
 {
-    if (m_pfnFstMain && m_pEffect)
-    {
-        dispatch_v(m_pEffect, VST24::PluginOpCode::Shutdown, 0, 0, 000, 0.000000);
-    }
+    Unload();
 }
 
 static float db2slider(float f)
@@ -162,7 +165,22 @@ bool VSTPlugin::Initialize(const std::filesystem::path &path)
         m_strVendorName = pVendorName;
     }
 
+    m_path = path;
+
     return bRes;
+}
+
+bool VSTPlugin::Unload()
+{
+    if (!m_pfnFstMain || !m_pEffect)
+        return false;
+
+    dispatch_v(m_pEffect, VST24::PluginOpCode::Shutdown, 0, 0, 000, 0.000000);
+    m_plugin.Unload();
+    m_pfnFstMain = nullptr;
+    m_pEffect = nullptr;
+
+    return true;
 }
 
 std::filesystem::path VSTPlugin::GetPath() const

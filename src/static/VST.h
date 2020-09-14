@@ -15,6 +15,10 @@ public:
     /// @return true if `path` points to a valid VST plugin and it was successfully loaded.
     bool Initialize(const std::filesystem::path &path);
 
+    /// @brief Send shutdown message to plugin and unload the shared library.
+    /// @return true if plugin was successfully unloaded.
+    bool Unload();
+
     ///Get path to VST plugin.
     std::filesystem::path GetPath()const;
 
@@ -31,7 +35,7 @@ public:
     int32_t GetVersion()const;
 
 protected:
-    std::filesystem::path	m_path;
+    std::filesystem::path 	m_path;
     std::string				m_strEffectName;
     std::string				m_strProductName;
     std::string				m_strVendorName;
@@ -55,11 +59,13 @@ public:
     /// @brief Clear directory list.
     void ClearDirectories();
 
-    /// @brief Scan all directories for VST plugins.
+    /// @brief Scan all directories for VST plugins. Each plugin is unloaded after being scanned.
     /// @return true if scan was successful. Otherwise, false.
     bool ScanDirectories();
 
+    const std::vector<std::shared_ptr<VSTPlugin>>& GetPlugins()const;
+
 protected:
     std::vector<std::filesystem::path>		m_vDirectories;
-    std::vector<std::unique_ptr<VSTPlugin>>	m_vVSTPlugins;
+    std::vector<std::shared_ptr<VSTPlugin>> m_vVSTPlugins;
 };

@@ -7,8 +7,7 @@ SharedLibrary::SharedLibrary(const std::filesystem::path &path)
 
 SharedLibrary::~SharedLibrary()
 {
-    if (m_handle)
-        FreeLibrary(m_handle);
+    Unload();
 }
 
 bool SharedLibrary::SetPath(const std::filesystem::path &path)
@@ -32,6 +31,17 @@ bool SharedLibrary::Load()
     m_handle = LoadLibraryW(m_path.c_str());
 
     return m_handle != nullptr;
+}
+
+bool SharedLibrary::Unload()
+{
+    if (!m_handle)
+        return false;
+    
+    if (!FreeLibrary(m_handle))
+        return false;
+
+    m_handle = nullptr;
 }
 
 bool SharedLibrary::GetSymbol(const std::string &strName, void **ptrFn) const
