@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SharedLibrary.h"
-#include <fst.h>
+#include "vst24.h"
 #include <vector>
 
 class VSTPlugin
@@ -15,11 +15,30 @@ public:
 	/// @return true if `path` points to a valid VST plugin and it was successfully loaded.
 	bool Initialize(const std::filesystem::path &path);
 
+	///Get path to VST plugin.
+	std::filesystem::path GetPath()const;
+
+	/// Get product name.
+	std::string GetProductName()const;
+
+	/// Get effect name.
+	std::string GetEffectName()const;
+
+	/// Get vendor name string.
+	std::string GetVendorName()const;
+
+	/// Get version.
+	int32_t GetVersion()const;
+
 protected:
-	typedef AEffect *(fnFstMain_t)(AEffectDispatcherProc);
-	SharedLibrary	m_plugin;
-	fnFstMain_t*	m_pfnFstMain;
-	AEffect*		m_pEffect;
+	std::filesystem::path	m_path;
+	std::string				m_strEffectName;
+	std::string				m_strProductName;
+	std::string				m_strVendorName;
+	int32_t					m_nVersion;
+	SharedLibrary			m_plugin;
+	VST24::pfnMain*			m_pfnFstMain;
+	VST24::AEffect*			m_pEffect;
 };
 
 class VSTDatabase

@@ -2,7 +2,3 @@
 	path = 3rdparty/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = 751d153ca9f338ec7159e7a250abe198b6a17d73
-[submodule "3rdparty/FST"]
-	path = 3rdparty/FST
-	url = https://git.iem.at/zmoelnig/FST.git
-	branch = fbc6f0d7ffab0cc86481a52623e185a6c9e5552a
