@@ -33,7 +33,7 @@ namespace VST24
 
     std::string OpCodeToString(HostOpCode_t nOpCode)
     {
-#define ENUM_CASE(value)   case HostOpCode_t::##value##: return #value;
+        #define ENUM_CASE(value)   case HostOpCode_t::##value##: return #value;
         switch (nOpCode)
         {
             ENUM_CASE(Automate)
@@ -69,12 +69,12 @@ namespace VST24
             ENUM_CASE(CloseFileSelector)
         }
         return "(unknown)";
-#undef ENUM_CASE
+        #undef ENUM_CASE
     }
 
     std::string OpCodeToString(PluginOpCode_t nOpCode)
     {
-#define ENUM_CASE(value)   case PluginOpCode_t::##value##: return #value;
+        #define ENUM_CASE(value)   case PluginOpCode_t::##value##: return #value;
         switch (nOpCode)
         {
             ENUM_CASE(Initialize)
@@ -139,6 +139,6 @@ namespace VST24
             ENUM_CASE(GetNumMidiOutputs)
         }
         return "(unknown)";
-#undef ENUM_CASE
+        #undef ENUM_CASE
     }
 } // namespace VST24

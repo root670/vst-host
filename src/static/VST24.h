@@ -505,7 +505,7 @@ namespace VST24
         pfnDispatcherProc dispatcher;
         /// Accumulating process mode is deprecated in VST 2.4! Use `processReplacing` instead!
         pfnProcessProc DEPRECATED(process);
-        /// Set value of automatable parameter. 
+        /// Set value of automatable parameter.
         pfnSetParameterProc setParameter;
         /// Get value of automatable parameter.
         pfnGetParameterProc getParameter;
